@@ -1,2 +1,2 @@
-#!/ban/bash
+#!/bin/bash
 touch hello
