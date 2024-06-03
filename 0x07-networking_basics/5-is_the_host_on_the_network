@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-#Send 5 ICMP ECHO_REQUSTS 
-#to the host specified in the argument
+# Pings an IP address passed an argument 5 times
 
-if [ "$1" ]; then
-    ping -c 5 "$1";
+if [ $# -eq 0 ]
+then
+	echo "Usage: 5-is_the_host_of_the_network {IP_ADDRESS}"
 else
-    echo "Usage: 5-is_the_host_on_the_network {IP_ADDRESS}"
+	ping -c 5 "$1"
 fi
