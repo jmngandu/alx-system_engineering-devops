@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Installing Nginx on Server and redirect
+sudo apt-get update -y && sudo apt-get upgrade -y
+sudo apt-get install -y nginx
+sudo chown -R "$USER":"$USER" /var/www/
+sudo chown -R "$USER":"$USER" /etc/nginx
+echo "School" > /var/www/html/index.nginx-debian.html
+line="\\\trewrite ^/redirect_me https://www.youtube.com/watch?v=dQw4w9WgXcQ permanent;"
+sudo sed -i "26i $line" /etc/nginx/sites-available/default
+sudo service nginx restart
+sudo service nginx reload

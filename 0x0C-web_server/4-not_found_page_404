@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Installing Nginx on Server and 404 page
+sudo apt-get update -y && sudo apt-get upgrade -y
+sudo apt-get install -y nginx
+sudo chown -R "$USER":"$USER" /var/www/
+sudo chown -R "$USER":"$USER" /etc/nginx
+echo "Holberton School" > /var/www/html/index.nginx-debian.html
+echo "Ceci n'est pas une page" | sudo tee /usr/share/nginx/html/404.html
+line="\\\terror_page 404 /404.html;\n\tlocation = /404.html {\n\t\troot /usr/share/nginx/html;\n\t\tinternal;\n\t}"
+sudo sed -i "27i $line" /etc/nginx/sites-available/default
+sudo service nginx restart
+sudo service nginx reload
