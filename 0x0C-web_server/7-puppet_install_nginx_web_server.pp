@@ -1,34 +1,55 @@
-# redirect me and nginx
-exec {'apt-get-update':
-  command => '/usr/bin/apt-get update'
-}
-
-package {'apache2.2-common':
-  ensure  => 'absent',
-  require => Exec['apt-get-update']
+# puppet manifest to configure the web server
+exec { 'dist update':
+        command  => '/usr/bin/apt-get update',
+        provider => 'shell'
 }
 
 package { 'nginx':
   ensure  => 'installed',
-  require => Package['apache2.2-common']
+  require => Exec['dist update']
+}
+
+file {'/var/www/html/index.html':
+  path    => '/var/www/html/index.html',
+  content => 'Hello World!',
+  owner   => 'ubuntu',
+  group   => 'ubuntu',
+  mode    => '7624'
+}
+
+exec {'redirect_me':
+  command  => 'sed -i "24i\	rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;" /etc/nginx/sites-available/default',
+  provider => 'shell'
 }
 
 service {'nginx':
-  ensure  =>  'running',
-  require => file_line['perform a redirection'],
+  ensure  => running,
+  require => Package['nginx']
+}# puppet manifest to configure the web server
+exec { 'dist update':
+        command  => '/usr/bin/apt-get update',
+        provider => 'shell'
 }
 
-file { '/var/www/html/index.nginx-debian.html':
-  ensure  => 'present',
-  content => 'School',
-  require =>  Package['nginx']
+package { 'nginx':
+  ensure  => 'installed',
+  require => Exec['dist update']
 }
 
-file_line { 'perform a redirection':
-  ensure  => 'present',
-  path    => '/etc/nginx/sites-enabled/default',
-  line    => 'rewrite ^/redirect_me/$ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;',
-  after   => 'root /var/www/html;',
-  require => Package['nginx'],
-  notify  => Service['nginx'],
+file {'/var/www/html/index.html':
+  path    => '/var/www/html/index.html',
+  content => 'Hello World!',
+  owner   => 'ubuntu',
+  group   => 'ubuntu',
+  mode    => '7624'
+}
+
+exec {'redirect_me':
+  command  => 'sed -i "24i\	rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;" /etc/nginx/sites-available/default',
+  provider => 'shell'
+}
+
+service {'nginx':
+  ensure  => running,
+  require => Package['nginx']
 }
