@@ -34,3 +34,4 @@ function install_and_configure_nginx(){
     fi
 }
 install_and_configure_nginx;
+
