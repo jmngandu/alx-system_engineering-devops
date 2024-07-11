@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# this script outputs a string that returns domain records info
+
+world_wide_web () {
+
+    if [ "$2" ]
+    then
+	rec=$(dig "$2.$1" | grep 'ANSWER SECTION:' -A1 | awk '{if (NR > 1) {print $4}}')
+	#echo "$rec"
+	ip=$(dig "$2.$1" | grep 'ANSWER SECTION:' -A1 | awk '{if (NR > 1) {print $5}}')
+	#echo "$ip"
+	echo "The subdomain $2 is a $rec record and points to $ip"
+    else
+	for i in "www" "lb-01" "web-01" "web-02"; do
+	    rec=$( dig "$i.$1" | grep 'ANSWER SECTION:' -A1 | awk '{if (NR > 1) {print $4}}')
+	    ip=$( dig "$i.$1" | grep 'ANSWER SECTION:' -A1 | awk '{if (NR > 1) {print $5}}')
+	    echo "The subdomain $i is a $rec record and points to $ip"
+	done
+    fi
+
+    return 0
+}
+
+if [ "$2" ]
+then
+    world_wide_web "$1" "$2"
+else
+    world_wide_web "$1"
+fi
