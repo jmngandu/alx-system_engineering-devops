@@ -23,3 +23,4 @@ function get_a_records(){
  
 }
 get_a_records "$1" "$2";
+
