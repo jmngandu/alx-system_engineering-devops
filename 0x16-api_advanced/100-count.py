@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 """
-parses title of all hot articles, and prints a sorted count 
-of given keywords (case-insensitive, delimited by spaces.
-Javascript should count as javascript, but java should not).
+parses title of all hot articles, and prints a sorted count
 """
 import pprint
 import re
